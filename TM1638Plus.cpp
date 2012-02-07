@@ -24,18 +24,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 #include "TM1638Plus.h"
 
+#define QUEUE_LIMIT 20
 
 TM1638Plus::TM1638Plus() {
   this->dataPin = 8;
   this->clockPin = 9;
   this->numModules = 0;
+  this->msgShow = 0;
+  this->msgQueue = 0;
 }
 
 TM1638Plus::TM1638Plus(byte dataPin, byte clockPin) {
   this->dataPin = dataPin;
   this->clockPin = clockPin;
   this->numModules = 0;
-  this->speed = 1000;
+  this->msgShow = 0;
+  this->msgQueue = 0;
 }
 
 void TM1638Plus::addModule(byte strobePin) {
@@ -48,6 +52,21 @@ void TM1638Plus::addModule(byte strobePin, byte dataPin, byte clockPin) {
     this->numModules++;
 }
 
+void TM1638Plus::addQueue(int anim, const char* text) {
+    this->queue[this->msgQueue].anim = anim;
+    this->queue[this->msgQueue].text = text;
+    this->queue[this->msgQueue].enabled = true;
+}
+
+void TM1638Plus::flashMsg(const char* text) {
+    
+}
+
+void TM1638Plus::copyText(const char* text) {
+    for(int i=0;i<256;i++) {
+        string[i] = 0;
+    }
+}
 
 void TM1638Plus::frame() {
     

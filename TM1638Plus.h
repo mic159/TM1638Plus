@@ -27,6 +27,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 #include "TM1638.h"
 
+#define QUEUE_LIMIT 20
+
+typedef struct TM1638_ANIM {
+    int anim; // animation type
+    const char* text; // text to display
+    bool enabled;
+} TM1638_ANIM;
+
 
 class TM1638Plus
 {
@@ -38,15 +46,24 @@ class TM1638Plus
     void addModule(byte strobePin);
     void addModule(byte strobePin, byte dataPin, byte clockPin);
     void frame();
+    void addQueue(int anim, const char* text);
+    void flashMsg(const char* text);
 
     TM1638 modules[8];
 
 
   private:
+    void setAnim(int anim, const char* text);
+      
+      
+    TM1638_ANIM queue[QUEUE_LIMIT];
     byte dataPin;
     byte clockPin;
     byte numModules;
-    int milliseconds;
+    int msgShow;
+    int msgQueue;
+    int anim;
+    char string[256];
 };
 
 #endif
