@@ -62,12 +62,6 @@ void TM1638Plus::flashMsg(const char* text) {
     
 }
 
-void TM1638Plus::copyText(const char* text) {
-    for(int i=0;i<256;i++) {
-        string[i] = 0;
-    }
-}
-
 void TM1638Plus::frame() {
     
 }
