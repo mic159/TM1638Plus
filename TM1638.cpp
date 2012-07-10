@@ -196,33 +196,16 @@ void TM1638::sendData(byte add, byte data)
 
 void TM1638::send(byte data)
 {
-  for (int i = 0; i < 8; i++) {
-    digitalWrite(clockPin, LOW);
-    digitalWrite(dataPin, data & 1 ? HIGH : LOW);
-    data >>= 1;
-    digitalWrite(clockPin, HIGH);
-  }
+  shiftOut(dataPin, clockPin, LSBFIRST, data);
 }
 
 byte TM1638::receive()
 {
-  byte temp = 0;
-
   // Pull-up on
   pinMode(dataPin, INPUT);
   digitalWrite(dataPin, HIGH);        
 
-  for (int i = 0; i < 8; i++) {
-    temp >>= 1;
-
-    digitalWrite(clockPin, LOW);        
-
-    if (digitalRead(dataPin)) {
-      temp |= 0x80;
-    }
-
-    digitalWrite(clockPin, HIGH);        
-  }
+  byte temp = shiftIn(dataPin, clockPin, LSBFIRST);
 
   // Pull-up off
   pinMode(dataPin, OUTPUT);
